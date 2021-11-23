@@ -1,0 +1,105 @@
+<div class="text-center contenido mb-3 ">
+  <h2 class="card-header">
+    Employees data management
+  </h2>
+  <div class="card-body bg-dark p-2 text-dark bg-opacity-10">
+    <form [formGroup]="form">
+      <label for="worker name" class="form-label">Employee name</label>
+      <input type="text" class="form-control mb-3" [ngClass]="{
+        'error-validation': sub && f['name'].errors,
+        'success-validation': name.valid && (name.dirty || name.touched)
+      }" formControlName="name" />
+      <label for="worker document" class="form-label">Identification number</label>
+      <input type="text" class="form-control mb-1" formControlName="document" />
+      <div id="IDspecs" class="form-text mb-3">Please don't leave blank spaces. Do not use any separation character.
+      </div>
+      <label for="worker phone" class="form-label">Phone number</label>
+      <input type="text" class="form-control mb-3" formControlName="phone" />
+      <label for="worker email" class="form-label">E-mail address</label>
+      <input type="text" class="form-control mb-3" formControlName="email" />
+      <label for="worker email" class="form-label mb-3">Salary</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">$</span>
+        <span class="input-group-text">0.00</span>
+        <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" formControlName="salary">
+      </div>
+      <label for="worker gender" class="form-label mb-3">Gender</label>
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Options</label>
+        <select class="form-select" id="selectGender" formControlName="female">
+          <option selected>Choose...</option>
+          <option value="1">Female</option>
+          <option value="2">Male</option>
+        </select>
+      </div>
+      <label for="worker birthday" class="form-label mb-3">Date of birth</label><br>
+      <input type="date" formControlName="dateOfBirth" id="start" name="trip-start" value="2000-01-01" min="1940-01-01" max="2023-01-01" class="mb-3">
+      <br>
+      <button class="btn btn-success mb-3" (click)="validacion()">
+        {{ config.config.formComponent.btnAccept }}
+      </button><br>
+      <!--<input type="text" class="form-control" (keyup)="search($event)">-->
+      <label for="search" class="form-label mt-3 ">:: Search an employee within the company ::</label>
+      <input type="text" class="form-control" (keyup)="searchget($event)" />
+    </form>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Document</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Email</th>
+        <th scope="col">Salary</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Birthday</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="workers && workers.length > 0">
+      <tr *ngFor="let item of workers">
+        <th scope="row">{{ item._id | slice: 0:4 }}...</th>
+        <td>{{ item.name }}</td>
+        <td>{{ item.document }}</td>
+        <td>{{ item.phone }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.salary }}</td>
+        <td>{{ item.female }}</td>
+        <td>{{ item.dateOfBirth }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="edit(item)">
+            {{ getConfigFc().config.formComponent.btnEdit }}
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="delete(item._id)">
+            Eliminar
+          </button>
+        </td>
+        <td>
+          <button class="btn" (click)="disEnable(item)" [ngClass]="{
+            'btn-success': item.status == true,
+            'btn-light': item.status == false
+          }">
+            Activar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!----- para el check button si quisiera que los generos usaran esta opción
+<div class="form-group">
+  <div class="form-check">
+    <input class="form-check-input" checked="false" value="m" formControlName="gender" type="radio">
+    <label class="form-check-label">Masculino</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" checked="true" value="f" formControlName="gender" type="radio">
+    <label class="form-check-label">Femenino</label>
+  </div>
+</div>
+---->
